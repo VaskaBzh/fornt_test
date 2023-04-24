@@ -1,0 +1,12 @@
+.list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 80px 40px;
+  width: 100%;
+  @include md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @include xs {
+    grid-template-columns: 1fr;
+  }
+}

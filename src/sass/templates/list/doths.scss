@@ -1,0 +1,25 @@
+.doths {
+  display: flex;
+  gap: 8px;
+  position: relative;
+  cursor: pointer;
+  .doth {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid $grayLight;
+    background-color: $gray;
+    transition: all 0.3s ease 0s;
+  }
+  &:hover {
+    .doth {
+      background-color: $blue;
+      border: 2px solid #519ba8;
+    }
+    .menu {
+      opacity: 1;
+      visibility: visible;
+      z-index: 1;
+    }
+  }
+}
