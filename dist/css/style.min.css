@@ -84,14 +84,10 @@ html {
 }
 
 .wrapper {
-  width: 1480px;
-  padding: 30px 0;
+  max-width: 1250px;
+  width: 100%;
+  padding: 30px 15px;
   margin: 0 auto;
-}
-@media (max-width: 767.98px) {
-  .wrapper {
-    width: 0;
-  }
 }
 
 .doths {
@@ -129,14 +125,20 @@ html {
 .item {
   width: 100%;
   min-height: 200px;
-  padding: 6px 12px;
+  transition: all 0.3s ease 0s;
   border-radius: 8px;
-  border: 1px solid #519ba8;
+}
+.item__wrap {
+  padding: 6px 12px;
+  gap: 12px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 12px;
   transition: all 0.3s ease 0s;
+  height: 100%;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #519ba8;
 }
 .item__head {
   display: flex;
@@ -145,12 +147,19 @@ html {
   width: 100%;
 }
 .item_text {
+  cursor: default;
+}
+.item_text,
+.item .input {
   color: #000;
   font-size: 18px;
   line-height: 20px;
   font-weight: 600;
+  border: none;
+  outline: none;
+  background: transparent;
 }
-.item-add {
+.item-add .item__wrap {
   flex-direction: row;
   justify-content: center;
   align-items: center;

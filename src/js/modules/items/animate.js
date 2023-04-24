@@ -1,5 +1,5 @@
 function clearCss(item) {
-  item.css({});
+  item.removeAttr('style');
 }
 
 export function add() {
@@ -14,7 +14,9 @@ export function add() {
       opacity: 1
     });
   }, 100);
-  setTimeout(clearCss(item), 400);
+  setTimeout(() => {
+    clearCss(item)
+  }, 400);
 }
 
 export async function remove(index) {
@@ -29,5 +31,7 @@ export async function remove(index) {
       opacity: 0
     });
   }, 100);
-  setTimeout(clearCss(item), 400);
+  setTimeout(() => {
+    clearCss(item)
+  }, 400);
 }

@@ -1,11 +1,23 @@
 import * as flsFunctions from './modules/functions.js'
 import { initJQ } from './modules/initJQ.js'
 import addItem from './modules/items/addItem.js'
-import removeItem from './modules/items/removeItem.js'
-import updateItem from './modules/items/updateItem.js'
+import { getStore } from "./modules/items/storage.js";
+import { unload } from "./modules/unLoad.js";
+import { updateItems } from "./modules/items/updateDb.js";
+import { removeItem, editText, moveItem } from "./modules/items/menuFunc.js";
 
-flsFunctions.isWebp()
+flsFunctions.isWebp();
+
 initJQ();
-addItem();
-removeItem();
-updateItem();
+$(document).ready(async function () {
+    let items = [];
+    if (localStorage.items) {
+        items = getStore();
+    }
+    updateItems(items);
+    addItem(items);
+    removeItem(items);
+    editText(items);
+    moveItem(items);
+    await unload(items)
+});
