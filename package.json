@@ -15,6 +15,7 @@
   "dependencies": {
     "del": "^7.0.0",
     "gulp-cli": "^2.3.0",
+    "gulp-json": "^0.1.4",
     "jquery": "^3.6.4"
   },
   "devDependencies": {

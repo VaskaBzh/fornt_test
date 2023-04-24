@@ -14,10 +14,10 @@ export function add() {
       opacity: 1
     });
   }, 100);
-  setTimeout(clearCss, 400);
+  setTimeout(clearCss(item), 400);
 }
 
-export function remove(index) {
+export async function remove(index) {
   const item = $('.item:not(.item-add)').eq(index);
   item.css({
     transform: `scale(${1})`,
@@ -29,5 +29,5 @@ export function remove(index) {
       opacity: 0
     });
   }, 100);
-  setTimeout(clearCss, 400);
+  setTimeout(clearCss(item), 400);
 }
