@@ -1,3 +1,6 @@
+/**
+ * Создания рендер элемента
+ */
 export function renderItem(item) {
     return $(`<div class="item">
                 <div class="item__wrap" style="${item.color}">

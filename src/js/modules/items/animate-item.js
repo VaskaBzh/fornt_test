@@ -24,10 +24,10 @@ export function add(options = {}) {
       transform: `scale(${scale})`,
       opacity: opacity
     });
-  }, 400);
+  }, 100);
   setTimeout(() => {
     clearCss(item)
-  }, 100);
+  }, 400);
 }
 
 /**

@@ -156,8 +156,12 @@ html {
   line-height: 20px;
   font-weight: 600;
   border: none;
+  border-bottom: 1px solid transparent;
   outline: none;
   background: transparent;
+}
+.item .input {
+  border-bottom: 1px solid #000;
 }
 .item-add .item__wrap {
   flex-direction: row;
@@ -197,7 +201,7 @@ html {
   right: 0;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.3s ease 0.3s;
+  transition: all 0.3s ease 0.1s;
   display: flex;
   flex-direction: column;
   border: 1px solid #519ba8;

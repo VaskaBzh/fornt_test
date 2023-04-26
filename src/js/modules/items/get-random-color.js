@@ -1,3 +1,6 @@
+/**
+ * Получение случайного линейного градиента
+ */
 export function getRandomLinearGradient() {
   const randomHue = Math.floor(Math.random() * 361);
   const randomSaturation = Math.floor(Math.random() * 101);

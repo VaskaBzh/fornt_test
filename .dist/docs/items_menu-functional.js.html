@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: items/menu-functional.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: items/menu-functional.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { remove } from "./animate-item.js";
+import { updateItems } from "./update-database.js";
+import { ajaxEdit, ajaxMove, ajaxRemove } from '../ajax/figurative-ajax.js'
+
+/**
+ * Удаление элемента
+ * @param {array} items - Массив, содержащий в себе массив элементов страницы.
+ */
+export function removeItem(items) {
+    $(document).on('click', '.menu_item:contains("Удалить")', async function() {
+        /**
+         * Элемент при клике
+         */
+        const item = $(this).closest('.item');
+        /**
+         * Индекс элемента
+         */
+        const index = $('.item').index(item);
+        setTimeout( async () => {
+            /**
+             * Запрос на удаление элемента
+             */
+            await ajaxRemove({
+                items: items,
+                index: index,
+            });
+            /**
+             * Обработка ошибок
+             */
+            try {
+                /**
+                 * Удаление элемента
+                 */
+                await remove(index);
+                /**
+                 * Обработка ошибок
+                 */
+                try {
+                    setTimeout(() => {
+                        item.remove();
+                        updateItems(items);
+                    }, 400);
+                } catch(error) {
+                    console.error('Произошла ошибка при анимации удаления: ', error);
+                }
+            } catch(error) {
+                console.error('Произошла ошибка при уделнии данных: ', error);
+            }
+        }, 400);
+    });
+}
+
+/**
+ * Редактирование текста элемента
+ * @param {array} items - Массив, содержащий в себе массив элементов страницы.
+ */
+export function editText(items) {
+    $(document).on('click', '.menu_item:contains("Переименовать")', async function() {
+        /**
+         * Элемент при клике
+         */
+        const item = $(this).closest('.item');
+        /**
+         * Индекс элемента
+         */
+        const index = $('.item').index(item);
+        /**
+         * Проверка на редактируемые элементы
+         */
+        if (!$('.list').find('.input').length) {
+            /**
+             * Создание input
+             */
+            const inputElement = $('&lt;input>', {
+                type: 'text',
+                name: 'edit',
+                value: item.find('.item_text').text(),
+                class: 'input'
+            });
+            /**
+             * Создание замена .item_text на input
+             */
+            item.find('.item_text').hide();
+            item.find('.item__wrap').append(inputElement);
+            /**
+             * Вызов функции обработчика для сохранения или отмены редактирования
+             */
+            save({
+                item: item,
+                items: items,
+                input: item.find('.input'),
+                index: index
+            });
+        } else {
+            alert("Можно редактировать только один блок одновременно!")
+        }
+    });
+}
+
+/**
+ * Сохранение редактированного текста элемента
+ * @param {object} data - Объект, содержащий в себе массив элементов страницы под ключем items, выбранный элемент под ключем item, index выбранного элемента и input этого элемента подключем input.
+ */
+function save(data) {
+    /**
+     * Функция завершения редактирования (замены input на .item_text)
+     */
+    const end = () => {
+        data.item.find('.item_text').show();
+        data.input.remove();
+    }
+
+    /**
+     * Обработчик применения/отмены редактирования
+     */
+    $('.list').keydown(async function (e) {
+        /**
+         * применение
+         */
+        if (e.key === 'Enter') {
+            await ajaxEdit({
+                items: data.items,
+                index: data.index,
+                input: data.input,
+                item: data.item,
+            });
+            try {
+                /**
+                 * Перенос значеня input в .item_text
+                 */
+                data.item.find('.item_text').text = data.input.val();
+                end();
+                /**
+                 * Ререндер элементов на странице
+                 */
+                updateItems(data.items);
+            } catch(error) {
+                console.error('Произошла ошибка при редактировании данных: ', error);
+            }
+            /**
+             * отмена
+             */
+        } else if (e.key === 'Escape') {
+            end();
+        }
+    });
+}
+
+/**
+ * Перемещение элемента
+ * @param {array} items - Массив, содержащий в себе массив элементов страницы.
+ */
+export function moveItem(items) {
+    $(document).on('click', '[data-direction]', async function() {
+        /**
+         * Индекс элемента при клике
+         */
+        const index = $('.item').index($(this).closest('.item'));
+        /**
+         * ($(this).data('direction') - направление в data аттрибуте кнопки)
+         */
+        await ajaxMove({
+            items: items,
+            index: index,
+            direction: $(this).data('direction'),
+        });
+        /**
+         * Обработка ошибок
+         */
+        try {
+            /**
+             * Ререндер элементов на странице
+             */
+            updateItems(items);
+        } catch(error) {
+            console.error('Произошла ошибка при перемещении элемента: ', error);
+        }
+    });
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#add">add</a></li><li><a href="global.html#addItem">addItem</a></li><li><a href="global.html#ajaxAdd">ajaxAdd</a></li><li><a href="global.html#ajaxEdit">ajaxEdit</a></li><li><a href="global.html#ajaxMove">ajaxMove</a></li><li><a href="global.html#ajaxRemove">ajaxRemove</a></li><li><a href="global.html#clearCss">clearCss</a></li><li><a href="global.html#editText">editText</a></li><li><a href="global.html#getRandomLinearGradient">getRandomLinearGradient</a></li><li><a href="global.html#getStore">getStore</a></li><li><a href="global.html#moveItem">moveItem</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#renderItem">renderItem</a></li><li><a href="global.html#save">save</a></li><li><a href="global.html#setStore">setStore</a></li><li><a href="global.html#updateItems">updateItems</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Apr 27 2023 01:12:51 GMT+0300 (GMT+03:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
